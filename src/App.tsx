@@ -1,12 +1,17 @@
-import React from 'react';
-import { KeeperFeatures } from './components/KeeperFeatures'
-import './App.css';
+import React from "react";
+import { KeeperFeatures } from "./components/KeeperFeatures/KeeperFeatures";
+import "./App.css";
+import { Jumbotron } from "react-bootstrap";
 
 function App() {
   return (
-    <div className="App">
-        <KeeperFeatures />
-    </div>
+    <>
+      <Jumbotron>
+        <h1>Keeper static page</h1>
+      </Jumbotron>
+
+      <KeeperFeatures />
+    </>
   );
 }
 

@@ -1,27 +1,63 @@
-import React from "react";
-import { Container, Row, Col, Jumbotron, Navbar } from "react-bootstrap";
-import { InstalledButLocked } from "../cases/InstalledButLocked";
-import { ConsoleOutput } from "../ConsoleOutput/ConsoleOutput";
+import React from 'react';
+import { Container, Row, Col, Navbar } from 'react-bootstrap';
+import { InstalledButLocked } from '../cases/InstalledButLocked';
+import { ConsoleOutput } from '../ConsoleOutput/ConsoleOutput';
+import { KeeperService } from '../../services/KeeperService';
+import { NetworkCheck } from '../cases/NetworkCheck';
+import { LockedResource } from '../cases/LockedResource';
+import { NotificationsFromLocked } from '../cases/NotificationsFromLocked';
 
 export class KeeperFeatures extends React.Component {
-  public keeperApi: any;
+  public keeperService: any;
 
   state = {
     keeperInitiated: false,
-    logMessage: ""
+    logMessage: ''
   };
 
   public setLogMessage = (logMessage: any) => {
-    this.setState({ logMessage });
+    if (logMessage === false) {
+      this.setState({ logMessage });
+      return;
+    }
+    const newMessage = this.state.logMessage
+      ? this.state.logMessage + '\n\n' + logMessage
+      : logMessage;
+    this.setState({ logMessage: newMessage });
   };
 
   componentDidMount() {
     (window.WavesKeeper as any).initialPromise.then(
       (apiWavesKeeper: typeof window.WavesKeeper) => {
-        this.keeperApi = apiWavesKeeper;
+        this.keeperService = new KeeperService(apiWavesKeeper);
         this.setState({ keeperInitiated: true });
       }
     );
+  }
+
+  private renderCards() {
+    if (this.state.keeperInitiated) {
+      return (
+        <>
+          <InstalledButLocked
+            keeperApi={this.keeperService}
+            onLogMessage={this.setLogMessage}
+          />
+          <NetworkCheck
+            keeperApi={this.keeperService}
+            onLogMessage={this.setLogMessage}
+          />
+          <LockedResource
+            keeperApi={this.keeperService}
+            onLogMessage={this.setLogMessage}
+          />
+          <NotificationsFromLocked
+            keeperApi={this.keeperService}
+            onLogMessage={this.setLogMessage}
+          />
+        </>
+      );
+    }
   }
 
   public render() {
@@ -29,18 +65,13 @@ export class KeeperFeatures extends React.Component {
       <>
         <Container>
           <Row>
-            <Col>
-              {this.state.keeperInitiated && (
-                <InstalledButLocked
-                  keeperApi={this.keeperApi}
-                  onLogMessage={this.setLogMessage}
-                />
-              )}
-            </Col>
+            <Col>{this.renderCards()}</Col>
           </Row>
         </Container>
-        <Navbar fixed='bottom' bg='dark' style={{flexWrap: 'wrap', minHeight: '200px'}}>
-          <ConsoleOutput>{this.state.logMessage}</ConsoleOutput>
+        <Navbar fixed='bottom' bg='dark' style={{ flexWrap: 'wrap' }}>
+          <ConsoleOutput onClear={this.setLogMessage}>
+            {this.state.logMessage}
+          </ConsoleOutput>
         </Navbar>
       </>
     );

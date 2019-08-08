@@ -1,14 +1,14 @@
 import React from 'react';
 import { CaseCard } from '../CaseCard/CaseCard';
 
-export class InstalledButLocked extends React.Component<IProps> {
+export class LockedResource extends React.Component<IProps> {
   public readonly state = {
-    notInitialized: undefined
+    resourceLocked: undefined
   };
 
   public onClear() {
     const { onLogMessage } = this.props;
-    this.setState({ notInitialized: undefined });
+    this.setState({ resourceLocked: undefined });
     onLogMessage('');
   }
 
@@ -19,23 +19,23 @@ export class InstalledButLocked extends React.Component<IProps> {
       .getPublicState()
       .then((publicState: any) => {
         onLogMessage(JSON.stringify(publicState, null, '\t'));
-
-        this.setState({ notInitialized: !publicState.initialized });
+        this.setState({ resourceLocked: false });
       })
       .catch((error: any) => {
         onLogMessage(JSON.stringify(error, null, '\t'));
-        if (error.message === 'Init Waves Keeper and add account') {
-          this.setState({ notInitialized: true });
+        if (error.message === 'Api rejected by user') {
+          this.setState({ resourceLocked: true });
         }
       });
   }
 
   public render() {
+    const { resourceLocked } = this.state;
     return (
       <CaseCard
-        title='Кипер установлен, но не инициализирован паролем'
-        text='Установить кипер, не инициализировать пароль.'
-        passed={this.state.notInitialized}
+        title='Подпись транзакции с заблокированного ресурса'
+        text='Заблокируйте доступ в (url-этого ресурса) в настройках Keeper'
+        passed={resourceLocked}
         onCheck={() => this.getPublicState()}
         onClear={() => this.onClear()}
       />

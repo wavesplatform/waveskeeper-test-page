@@ -137,5 +137,6 @@
     "presets": [
       "react-app"
     ]
-  }
+  },
+  "devDependencies": {}
 }

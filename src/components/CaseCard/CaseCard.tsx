@@ -31,15 +31,10 @@ export const CaseCard: React.FunctionComponent<IProps> = (props: IProps) => {
       <Row>
         <Col>
           <Card>
-            <Card.Body>
-              <Accordion>
-                <Card.Title>{props.title}</Card.Title>
+            <Accordion>
+              <Card.Title>{props.title}</Card.Title>
+              <Card.Body>
                 <Alert variant={switchColor(props.passed)}>{props.text}</Alert>
-
-                <Accordion.Collapse eventKey='0'>
-                  <Card.Body>{props.value}</Card.Body>
-                </Accordion.Collapse>
-
                 <ButtonToolbar>
                   <Button
                     variant='primary'
@@ -55,14 +50,20 @@ export const CaseCard: React.FunctionComponent<IProps> = (props: IProps) => {
                   >
                     Сброс
                   </Button>
-                  {props.value && (
+                  {(props.value || props.children) && (
                     <Accordion.Toggle as={Button} variant='link' eventKey='0'>
                       Подробности
                     </Accordion.Toggle>
                   )}
                 </ButtonToolbar>
-              </Accordion>
-            </Card.Body>
+              </Card.Body>
+              <Accordion.Collapse eventKey='0'>
+                <Card.Footer>
+                  <Card.Text>{props.value}</Card.Text>
+                  <div>{props.children}</div>
+                </Card.Footer>
+              </Accordion.Collapse>
+            </Accordion>
           </Card>
         </Col>
       </Row>
@@ -74,6 +75,7 @@ interface IProps {
   title: string;
   passed: boolean | undefined;
   text: string;
+  children?: React.ReactNode;
   value?: string | null;
   onCheck: Function;
   onClear: Function;

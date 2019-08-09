@@ -63,12 +63,12 @@ export class KeeperFeatures extends React.Component {
   public render() {
     return (
       <>
-        <Container>
+        <Container style={{ flex: 1, overflow: 'auto' }}>
           <Row>
             <Col>{this.renderCards()}</Col>
           </Row>
         </Container>
-        <Navbar fixed='bottom' bg='dark' style={{ flexWrap: 'wrap' }}>
+        <Navbar bg='dark' style={{ flexWrap: 'wrap' }}>
           <ConsoleOutput onClear={this.setLogMessage}>
             {this.state.logMessage}
           </ConsoleOutput>

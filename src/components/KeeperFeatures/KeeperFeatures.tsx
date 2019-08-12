@@ -6,15 +6,19 @@ import { KeeperService } from '../../services/KeeperService';
 import { NetworkCheck } from '../cases/NetworkCheck';
 import { LockedResource } from '../cases/LockedResource';
 import { NotificationsFromLocked } from '../cases/NotificationsFromLocked';
+import { TestsList } from '../TestsList/TestsList';
+import { ITestStep } from '../../global';
 
-export class KeeperFeatures extends React.Component {
+export class KeeperFeatures extends React.Component<IProps, IState> {
   public keeperService: any;
 
-  state = {
+  readonly state = {
     keeperInitiated: false,
-    logMessage: ''
+    logMessage: '',
+    testSteps: [],
   };
 
+  //TODO type
   public setLogMessage = (logMessage: any) => {
     if (logMessage === false) {
       this.setState({ logMessage });
@@ -23,7 +27,12 @@ export class KeeperFeatures extends React.Component {
     const newMessage = this.state.logMessage
       ? this.state.logMessage + '\n\n' + logMessage
       : logMessage;
+
     this.setState({ logMessage: newMessage });
+  };
+
+  public setTestStep = (testSteps: Array<ITestStep>) => {
+    this.setState({ testSteps });
   };
 
   componentDidMount() {
@@ -31,30 +40,24 @@ export class KeeperFeatures extends React.Component {
       (apiWavesKeeper: typeof window.WavesKeeper) => {
         this.keeperService = new KeeperService(apiWavesKeeper);
         this.setState({ keeperInitiated: true });
-      }
+      },
     );
   }
 
   private renderCards() {
+    const cardProps = {
+      keeperApi: this.keeperService,
+      onLogMessage: this.setLogMessage,
+      onTestRun: this.setTestStep,
+    };
+
     if (this.state.keeperInitiated) {
       return (
         <>
-          <InstalledButLocked
-            keeperApi={this.keeperService}
-            onLogMessage={this.setLogMessage}
-          />
-          <NetworkCheck
-            keeperApi={this.keeperService}
-            onLogMessage={this.setLogMessage}
-          />
-          <LockedResource
-            keeperApi={this.keeperService}
-            onLogMessage={this.setLogMessage}
-          />
-          <NotificationsFromLocked
-            keeperApi={this.keeperService}
-            onLogMessage={this.setLogMessage}
-          />
+          <InstalledButLocked {...cardProps} />
+          <NetworkCheck {...cardProps} />
+          <LockedResource {...cardProps} />
+          <NotificationsFromLocked {...cardProps} />
         </>
       );
     }
@@ -63,9 +66,12 @@ export class KeeperFeatures extends React.Component {
   public render() {
     return (
       <>
-        <Container style={{ flex: 1, overflow: 'auto' }}>
+        <Container style={{ flex: 1, overflow: 'auto' }} fluid={true}>
           <Row>
-            <Col>{this.renderCards()}</Col>
+            <Col md={8}>{this.renderCards()}</Col>
+            <Col md={4}>
+              <TestsList testSteps={this.state.testSteps} />
+            </Col>
           </Row>
         </Container>
         <Navbar bg='dark' style={{ flexWrap: 'wrap' }}>
@@ -77,3 +83,11 @@ export class KeeperFeatures extends React.Component {
     );
   }
 }
+
+interface IState {
+  keeperInitiated: boolean;
+  logMessage: string;
+  testSteps: Array<ITestStep>;
+}
+
+interface IProps {}

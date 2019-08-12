@@ -1,13 +1,14 @@
 import React from 'react';
 import { CaseCard } from '../CaseCard/CaseCard';
 import { NotificationForm } from '../NotificationForm/NotificationForm';
+import { ICaseProps } from '../../global';
 
-export class NotificationsFromLocked extends React.Component<IProps> {
+export class NotificationsFromLocked extends React.Component<ICaseProps> {
   public readonly state = {
     notificationsLocked: undefined,
     formValues: {
-      title: '',
-      message: ''
+      title: 'Hello!!!',
+      message: 'Buy tokens and win the prize!!!!'
     }
   };
 
@@ -19,16 +20,7 @@ export class NotificationsFromLocked extends React.Component<IProps> {
 
   //@TODO разобраться с типами
   // public onSubmit(formData: WavesKeeper.INotificationData) {
-  public onSubmit(event: any) {
-    event.preventDefault();
-    console.log(event);
-
-    this.setState({ formValues: event.currentTarget.value });
-  }
-
-  public onChange = (data: any) => {
-    console.log(data);
-
+  public onChange = (data: WavesKeeper.INotificationData) => {
     const { title, message } = this.state.formValues;
 
     const newValues = {
@@ -36,8 +28,6 @@ export class NotificationsFromLocked extends React.Component<IProps> {
       message:
         message === data.message || !data.message ? message : data.message
     };
-
-    console.log(newValues);
 
     this.setState({ formValues: newValues });
   };
@@ -48,6 +38,7 @@ export class NotificationsFromLocked extends React.Component<IProps> {
     keeperApi
       .notification(notification)
       .then((response: any) => {
+        console.log(response);
         onLogMessage(JSON.stringify(response, null, '\t'));
         this.setState({ notificationsLocked: false });
       })
@@ -70,13 +61,11 @@ export class NotificationsFromLocked extends React.Component<IProps> {
         onCheck={() => this.notificateMe(this.state.formValues)}
         onClear={() => this.onClear()}
       >
-        <NotificationForm onChange={this.onChange} />
+        <NotificationForm
+          onChange={this.onChange}
+          formValues={this.state.formValues}
+        />
       </CaseCard>
     );
   }
-}
-
-interface IProps {
-  keeperApi: any;
-  onLogMessage: any;
 }

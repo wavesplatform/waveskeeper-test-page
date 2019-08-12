@@ -10,7 +10,7 @@ import {
   ButtonToolbar,
   Accordion
 } from 'react-bootstrap';
-import './caseCard.css';
+import './caseCard.scss';
 
 export const CaseCard: React.FunctionComponent<IProps> = (props: IProps) => {
   function switchColor(passed: IProps['passed']): AlertProps['variant'] {
@@ -32,8 +32,8 @@ export const CaseCard: React.FunctionComponent<IProps> = (props: IProps) => {
         <Col>
           <Card>
             <Accordion>
-              <Card.Title>{props.title}</Card.Title>
               <Card.Body>
+                <Card.Title>{props.title}</Card.Title>
                 <Alert variant={switchColor(props.passed)}>{props.text}</Alert>
                 <ButtonToolbar>
                   <Button

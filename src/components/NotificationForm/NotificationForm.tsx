@@ -9,8 +9,8 @@ import {
 
 export class NotificationForm extends React.Component<IProps> {
   state = {
-    titleValue: '',
-    messageValue: ''
+    titleValue: this.props.formValues.title,
+    messageValue: this.props.formValues.message
   };
 
   private onChangeTitle = (event: React.FormEvent<FormControlProps>) => {
@@ -58,4 +58,5 @@ export class NotificationForm extends React.Component<IProps> {
 interface IProps {
   // onSubmit: WavesKeeper.INotificationData;
   onChange: any;
+  formValues: any;
 }

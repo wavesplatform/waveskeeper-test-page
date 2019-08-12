@@ -1,9 +1,10 @@
 import React from 'react';
 import { CaseCard } from '../CaseCard/CaseCard';
+import { ICaseProps } from '../../global';
 
-export class LockedResource extends React.Component<IProps> {
+export class LockedResource extends React.Component<ICaseProps> {
   public readonly state = {
-    resourceLocked: undefined
+    resourceLocked: undefined,
   };
 
   public onClear() {
@@ -41,9 +42,4 @@ export class LockedResource extends React.Component<IProps> {
       />
     );
   }
-}
-
-interface IProps {
-  keeperApi: any;
-  onLogMessage: any;
 }

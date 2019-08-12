@@ -1,7 +1,7 @@
 export class KeeperService {
   private keeper: any;
 
-  constructor(apiWavesKeeper: any) {
+  constructor(apiWavesKeeper: WavesKeeper.TWavesKeeperApi) {
     this.keeper = apiWavesKeeper;
   }
 
@@ -10,10 +10,7 @@ export class KeeperService {
   }
 
   public notification(
-    notificationData = {
-      title: 'Hello!',
-      message: 'Congratulation!!!'
-    }
+    notificationData: WavesKeeper.INotificationData,
   ): Promise<void> {
     return this.keeper.notification(notificationData);
   }
@@ -24,14 +21,14 @@ export class KeeperService {
       data: {
         amount: {
           assetId: 'WAVES',
-          tokens: '1.567'
+          tokens: '1.567',
         },
         fee: {
           assetId: 'WAVES',
-          tokens: '0.001'
+          tokens: '0.001',
         },
-        recipient: 'test'
-      }
+        recipient: 'test',
+      },
     };
 
     return this.keeper

@@ -1,11 +1,12 @@
 import React from 'react';
 import { CaseCard } from '../CaseCard/CaseCard';
+import { ICaseProps } from '../../global';
 
 const TESTING_NETWORK_CODE = 'T';
 
-export class NetworkCheck extends React.Component<IProps> {
+export class NetworkCheck extends React.Component<ICaseProps> {
   public readonly state = {
-    networkCode: undefined
+    networkCode: undefined,
   };
 
   public onClear() {
@@ -41,9 +42,4 @@ export class NetworkCheck extends React.Component<IProps> {
       />
     );
   }
-}
-
-interface IProps {
-  keeperApi: any;
-  onLogMessage: any;
 }

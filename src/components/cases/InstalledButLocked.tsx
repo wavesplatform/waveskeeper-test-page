@@ -1,15 +1,25 @@
 import React from 'react';
 import { CaseCard } from '../CaseCard/CaseCard';
+import { ITestStep, ICaseProps } from '../../global';
 
-export class InstalledButLocked extends React.Component<IProps> {
+const TEST_MESSAGE = 'Кипер установлен, но не инициализирован паролем';
+
+export class InstalledButLocked extends React.Component<ICaseProps> {
+  private testSteps: Array<ITestStep> = [];
+
   public readonly state = {
-    notInitialized: undefined
+    notInitialized: undefined,
   };
 
   public onClear() {
     const { onLogMessage } = this.props;
     this.setState({ notInitialized: undefined });
     onLogMessage('');
+  }
+
+  private setMessage(isPassed: boolean) {
+    const { onTestRun } = this.props;
+    onTestRun && onTestRun([{ testText: TEST_MESSAGE, isPassed: isPassed }]);
   }
 
   private getPublicState() {
@@ -19,11 +29,12 @@ export class InstalledButLocked extends React.Component<IProps> {
       .getPublicState()
       .then((publicState: any) => {
         onLogMessage(JSON.stringify(publicState, null, '\t'));
-
+        this.setMessage(false);
         this.setState({ notInitialized: !publicState.initialized });
       })
       .catch((error: any) => {
         onLogMessage(JSON.stringify(error, null, '\t'));
+        this.setMessage(true);
         if (error.message === 'Init Waves Keeper and add account') {
           this.setState({ notInitialized: true });
         }
@@ -41,9 +52,4 @@ export class InstalledButLocked extends React.Component<IProps> {
       />
     );
   }
-}
-
-interface IProps {
-  keeperApi: any;
-  onLogMessage: any;
 }

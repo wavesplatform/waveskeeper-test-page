@@ -1,6 +1,6 @@
 import React from 'react';
-import { CaseCard } from '../CaseCard/CaseCard';
-import { ITestStep, ICaseProps } from '../../global';
+import { CaseCard } from '../../CaseCard/CaseCard';
+import { ITestStep, ICaseProps } from '../../../global';
 
 const TEST_MESSAGE = 'Кипер установлен, но не инициализирован паролем';
 
@@ -11,7 +11,7 @@ export class InstalledButLocked extends React.Component<ICaseProps> {
     notInitialized: undefined,
   };
 
-  public onClear() {
+  public onReset() {
     const { onLogMessage } = this.props;
     this.setState({ notInitialized: undefined });
     onLogMessage('');
@@ -48,7 +48,7 @@ export class InstalledButLocked extends React.Component<ICaseProps> {
         text='Установить кипер, не инициализировать пароль.'
         passed={this.state.notInitialized}
         onCheck={() => this.getPublicState()}
-        onClear={() => this.onClear()}
+        onReset={() => this.onReset()}
       />
     );
   }

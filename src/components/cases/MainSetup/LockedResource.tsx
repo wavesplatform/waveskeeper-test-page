@@ -1,13 +1,13 @@
 import React from 'react';
-import { CaseCard } from '../CaseCard/CaseCard';
-import { ICaseProps } from '../../global';
+import { CaseCard } from '../../CaseCard/CaseCard';
+import { ICaseProps } from '../../../global';
 
 export class LockedResource extends React.Component<ICaseProps> {
   public readonly state = {
     resourceLocked: undefined,
   };
 
-  public onClear() {
+  public onReset() {
     const { onLogMessage } = this.props;
     this.setState({ resourceLocked: undefined });
     onLogMessage('');
@@ -38,7 +38,7 @@ export class LockedResource extends React.Component<ICaseProps> {
         text='Заблокируйте доступ в (url-этого ресурса) в настройках Keeper'
         passed={resourceLocked}
         onCheck={() => this.getPublicState()}
-        onClear={() => this.onClear()}
+        onReset={() => this.onReset()}
       />
     );
   }

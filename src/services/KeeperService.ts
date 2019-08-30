@@ -15,6 +15,11 @@ export class KeeperService {
     return this.keeper.notification(notificationData);
   }
 
+  public authData(data: WavesKeeper.IAuthData) {
+    const authData = data || { data: "Auth on my site" };
+    return this.keeper.auth(authData);
+  }
+
   public signData() {
     const txData = {
       type: 4,

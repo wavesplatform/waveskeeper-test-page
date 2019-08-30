@@ -1,18 +1,18 @@
 import React from 'react';
-import { CaseCard } from '../CaseCard/CaseCard';
-import { NotificationForm } from '../NotificationForm/NotificationForm';
-import { ICaseProps } from '../../global';
+import { CaseCard } from '../../CaseCard/CaseCard';
+import { NotificationForm } from '../../NotificationForm/NotificationForm';
+import { ICaseProps } from '../../../global';
 
-export class NotificationsFromLocked extends React.Component<ICaseProps> {
+export class NotificationsFromLocked extends React.Component<NotificationProps>   {
   public readonly state = {
     notificationsLocked: undefined,
     formValues: {
-      title: 'Hello!!!',
-      message: 'Buy tokens and win the prize!!!!'
-    }
+      title: this.props.title || 'Hello!!!',
+      message: this.props.message || 'Buy tokens and win the prize!!!!',
+    },
   };
 
-  public onClear() {
+  public onReset() {
     const { onLogMessage } = this.props;
     this.setState({ notificationsLocked: undefined });
     onLogMessage('');
@@ -26,7 +26,7 @@ export class NotificationsFromLocked extends React.Component<ICaseProps> {
     const newValues = {
       title: title === data.title || !data.title ? title : data.title,
       message:
-        message === data.message || !data.message ? message : data.message
+        message === data.message || !data.message ? message : data.message,
     };
 
     this.setState({ formValues: newValues });
@@ -59,7 +59,7 @@ export class NotificationsFromLocked extends React.Component<ICaseProps> {
         text='Запретите доступ "Allow sending messages" в (url-этого ресурса) в настройках Keeper'
         passed={notificationsLocked}
         onCheck={() => this.notificateMe(this.state.formValues)}
-        onClear={() => this.onClear()}
+        onReset={() => this.onReset()}
       >
         <NotificationForm
           onChange={this.onChange}
@@ -68,4 +68,9 @@ export class NotificationsFromLocked extends React.Component<ICaseProps> {
       </CaseCard>
     );
   }
+}
+
+interface NotificationProps extends ICaseProps {
+  title?: string;
+  message?: string;
 }

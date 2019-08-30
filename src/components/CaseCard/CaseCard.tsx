@@ -8,7 +8,7 @@ import {
   Button,
   AlertProps,
   ButtonToolbar,
-  Accordion
+  Accordion,
 } from 'react-bootstrap';
 import './caseCard.scss';
 
@@ -34,7 +34,7 @@ export const CaseCard: React.FunctionComponent<IProps> = (props: IProps) => {
             <Accordion>
               <Card.Body>
                 <Card.Title>{props.title}</Card.Title>
-                <Alert variant={switchColor(props.passed)}>{props.text}</Alert>
+                <Alert className='case-card__text' variant={switchColor(props.passed)}>{props.text}</Alert>
                 <ButtonToolbar>
                   <Button
                     variant='primary'
@@ -45,7 +45,7 @@ export const CaseCard: React.FunctionComponent<IProps> = (props: IProps) => {
                   </Button>
                   <Button
                     variant='secondary'
-                    onClick={() => props.onClear()}
+                    onClick={() => props.onReset()}
                     disabled={props.passed === undefined}
                   >
                     Сброс
@@ -74,11 +74,11 @@ export const CaseCard: React.FunctionComponent<IProps> = (props: IProps) => {
 interface IProps {
   title: string;
   passed: boolean | undefined;
-  text: string;
+  text?: string | undefined;
   children?: React.ReactNode;
   value?: string | null;
   onCheck: Function;
-  onClear: Function;
+  onReset: Function;
 }
 
 CaseCard.defaultProps = {
@@ -89,7 +89,7 @@ CaseCard.defaultProps = {
   onCheck: () => {
     console.log('Check');
   },
-  onClear: () => {
+  onReset: () => {
     console.log('Clear');
-  }
+  },
 };

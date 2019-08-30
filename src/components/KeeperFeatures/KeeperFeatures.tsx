@@ -1,13 +1,10 @@
 import React from 'react';
 import { Container, Row, Col, Navbar } from 'react-bootstrap';
-import { InstalledButLocked } from '../cases/InstalledButLocked';
 import { ConsoleOutput } from '../ConsoleOutput/ConsoleOutput';
 import { KeeperService } from '../../services/KeeperService';
-import { NetworkCheck } from '../cases/NetworkCheck';
-import { LockedResource } from '../cases/LockedResource';
-import { NotificationsFromLocked } from '../cases/NotificationsFromLocked';
 import { TestsList } from '../TestsList/TestsList';
 import { ITestStep } from '../../global';
+import { CaseTabs } from '../CaseTabs';
 
 export class KeeperFeatures extends React.Component<IProps, IState> {
   public keeperService: any;
@@ -24,9 +21,7 @@ export class KeeperFeatures extends React.Component<IProps, IState> {
       this.setState({ logMessage });
       return;
     }
-    const newMessage = this.state.logMessage
-      ? this.state.logMessage + '\n\n' + logMessage
-      : logMessage;
+    const newMessage = this.state.logMessage ? this.state.logMessage + '\n\n' + logMessage : logMessage;
 
     this.setState({ logMessage: newMessage });
   };
@@ -36,12 +31,10 @@ export class KeeperFeatures extends React.Component<IProps, IState> {
   };
 
   componentDidMount() {
-    (window.WavesKeeper as any).initialPromise.then(
-      (apiWavesKeeper: typeof window.WavesKeeper) => {
-        this.keeperService = new KeeperService(apiWavesKeeper);
-        this.setState({ keeperInitiated: true });
-      },
-    );
+    (window.WavesKeeper as any).initialPromise.then((apiWavesKeeper: typeof window.WavesKeeper) => {
+      this.keeperService = new KeeperService(apiWavesKeeper);
+      this.setState({ keeperInitiated: true });
+    });
   }
 
   private renderCards() {
@@ -54,10 +47,7 @@ export class KeeperFeatures extends React.Component<IProps, IState> {
     if (this.state.keeperInitiated) {
       return (
         <>
-          <InstalledButLocked {...cardProps} />
-          <NetworkCheck {...cardProps} />
-          <LockedResource {...cardProps} />
-          <NotificationsFromLocked {...cardProps} />
+          <CaseTabs {...cardProps}/>
         </>
       );
     }
@@ -75,9 +65,7 @@ export class KeeperFeatures extends React.Component<IProps, IState> {
           </Row>
         </Container>
         <Navbar bg='dark' style={{ flexWrap: 'wrap' }}>
-          <ConsoleOutput onClear={this.setLogMessage}>
-            {this.state.logMessage}
-          </ConsoleOutput>
+          <ConsoleOutput onClear={this.setLogMessage}>{this.state.logMessage}</ConsoleOutput>
         </Navbar>
       </>
     );

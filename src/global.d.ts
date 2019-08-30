@@ -12,5 +12,5 @@ interface ITestStep {
 interface ICaseProps {
   keeperApi: KeeperService;
   onLogMessage: Function;
-  onTestRun?: (steps: Array<ITestStep>) => void;
+  onTestRun: (steps: Array<ITestStep>) => void;
 }
